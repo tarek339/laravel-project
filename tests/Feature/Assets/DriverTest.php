@@ -26,7 +26,7 @@ test('drivers can be fetched and displayed', function () {
     ['user' => $user, 'company' => $company, 'drivers' => $drivers] = createMultipleDriversWithDependencies();
 
     $this->actingAs($user)
-        ->get('/driver')
+        ->get('/drivers')
         ->assertInertia(
             fn ($page) => $page
                 ->component('drivers/drivers-table')
@@ -69,32 +69,13 @@ test('a driver can be added', function () {
         ->post(route('driver.store'), $driverData);
 
     // Assert: Check that the Driver was saved to the database
-    $this->assertDatabaseHas('drivers', [
-        'company_id' => $company->id,
-        'first_name' => 'John',
-        'last_name' => 'Doe',
-        'email' => 'john.doe@example.com',
-        'phone' => '1234567890',
-        'license_number' => 'ABC123',
-        'license_expiry_date' => '2025-12-31',
-        'driver_card_number' => 'DC123456',
-        'driver_card_expiry_date' => '2025-12-31',
-        'driver_qualification_number' => 'DQ123456',
-        'driver_qualification_expiry_date' => '2025-12-31',
-        'street' => '123 Main St',
-        'house_number' => '1A',
-        'city' => 'Anytown',
-        'postal_code' => '12345',
-        'state' => 'CA',
-        'country' => 'USA',
-        'additional_information' => 'No additional information',
-    ]);
+    $this->assertDatabaseHas('drivers', $driverData);
 
     // Check that the response is a redirect (successful creation)
     $response->assertStatus(302);
 
     // Check specific redirect to the Driver list
-    $response->assertRedirect(route('driver.index'));
+    $response->assertRedirect(route('drivers.index'));
 });
 
 test('driver profile can be fetched', function () {
@@ -119,7 +100,7 @@ test('driver profile can be fetched', function () {
         );
 });
 
-test('driver can be updated', function () {
+test('drivers profile can be edited', function () {
     ['user' => $user, 'company' => $company, 'driver' => $driver] = createDriverWithDependencies();
 
     // Prepare the updated Driver data
@@ -149,33 +130,13 @@ test('driver can be updated', function () {
         ->put(route('driver.update', $driver->id), $updatedDriverData);
 
     // Assert: Check that the Driver data was updated in the database
-    $this->assertDatabaseHas('drivers', [
-        'id' => $driver->id,
-        'company_id' => $company->id,
-        'first_name' => 'Jane',
-        'last_name' => 'Doe',
-        'email' => 'jane.doe@example.com',
-        'phone' => '0987654321',
-        'license_number' => 'XYZ789',
-        'license_expiry_date' => '2026-12-31',
-        'driver_card_number' => 'DC654321',
-        'driver_card_expiry_date' => '2026-12-31',
-        'driver_qualification_number' => 'DQ654321',
-        'driver_qualification_expiry_date' => '2026-12-31',
-        'street' => '456 Elm St',
-        'house_number' => '2B',
-        'city' => 'Othertown',
-        'postal_code' => '54321',
-        'state' => 'NY',
-        'country' => 'USA',
-        'additional_information' => 'No additional information',
-    ]);
+    $this->assertDatabaseHas('drivers', $updatedDriverData);
 
     // Check that the response is a redirect (successful update)
     $response->assertStatus(302);
 
     // Check specific redirect to the Driver list
-    $response->assertRedirect(route('driver.index'));
+    $response->assertRedirect(route('drivers.index'));
 });
 
 test('a single driver can be deleted', function () {
@@ -194,7 +155,7 @@ test('a single driver can be deleted', function () {
     $response->assertStatus(302);
 
     // Check specific redirect to the Driver list
-    $response->assertRedirect(route('driver.index'));
+    $response->assertRedirect(route('drivers.index'));
 });
 
 test('all drivers can be deleted', function () {
@@ -203,7 +164,7 @@ test('all drivers can be deleted', function () {
 
     // Act: Send DELETE request to delete all Drivers
     $response = $this->actingAs($user)
-        ->delete(route('driver.destroyMultiple'), [
+        ->delete(route('drivers.destroyMultiple'), [
             'driver_ids' => $drivers->pluck('id')->toArray(),
         ]);
 
@@ -218,5 +179,5 @@ test('all drivers can be deleted', function () {
     $response->assertStatus(302);
 
     // Check specific redirect to the Driver list
-    $response->assertRedirect(route('driver.index'));
+    $response->assertRedirect(route('drivers.index'));
 });
