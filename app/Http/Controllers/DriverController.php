@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Driver;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,7 +14,7 @@ class DriverController extends Controller
     public function index()
     {
         return Inertia::render('drivers/drivers-table', [
-            'drivers' => Driver::all()
+            'drivers' => Driver::all(),
         ]);
     }
 
@@ -56,7 +55,7 @@ class DriverController extends Controller
     public function show(Driver $driver)
     {
         return Inertia::render('drivers/driver-profile', [
-            'driver' => $driver
+            'driver' => $driver,
         ]);
     }
 
@@ -69,7 +68,7 @@ class DriverController extends Controller
             'company_id' => 'required|exists:companies,id',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:drivers,email,' . $driver->id,
+            'email' => 'required|email|max:255|unique:drivers,email,'.$driver->id,
             'phone' => 'required|string|max:255',
             'license_number' => 'required|string|max:255',
             'license_expiry_date' => 'required|date',

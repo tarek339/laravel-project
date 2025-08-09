@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\User;
 use App\Models\Company;
 use App\Models\Driver;
+use App\Models\User;
 
 function createDriverWithDependencies(): array
 {
@@ -28,7 +28,7 @@ test('drivers can be fetched and displayed', function () {
     $this->actingAs($user)
         ->get('/driver')
         ->assertInertia(
-            fn($page) => $page
+            fn ($page) => $page
                 ->component('drivers/drivers-table')
                 ->has('drivers')
         )
@@ -97,7 +97,7 @@ test('a driver can be added', function () {
     $response->assertRedirect(route('driver.index'));
 });
 
-test("driver profile can be fetched", function () {
+test('driver profile can be fetched', function () {
     // Arrange: Create an authenticated user
     ['user' => $user, 'company' => $company, 'driver' => $driver] = createDriverWithDependencies();
 
@@ -108,18 +108,18 @@ test("driver profile can be fetched", function () {
     // Assert: Check that the response contains the expected data
     $response->assertStatus(200)
         ->assertInertia(
-            fn($page) => $page
+            fn ($page) => $page
                 ->component('drivers/driver-profile')
                 ->has(
                     'driver',
-                    fn($driverData) => $driverData
+                    fn ($driverData) => $driverData
                         ->where('id', $driver->id)
                         ->etc()
                 )
         );
 });
 
-test("driver can be updated", function () {
+test('driver can be updated', function () {
     ['user' => $user, 'company' => $company, 'driver' => $driver] = createDriverWithDependencies();
 
     // Prepare the updated Driver data
@@ -178,7 +178,7 @@ test("driver can be updated", function () {
     $response->assertRedirect(route('driver.index'));
 });
 
-test("a single driver can be deleted", function () {
+test('a single driver can be deleted', function () {
     ['user' => $user, 'company' => $company, 'driver' => $driver] = createDriverWithDependencies();
 
     // Act: Send DELETE request to delete the Driver
@@ -187,7 +187,7 @@ test("a single driver can be deleted", function () {
 
     // Assert: Check that the Driver was deleted from the database
     $this->assertDatabaseMissing('drivers', [
-        'id' => $driver->id
+        'id' => $driver->id,
     ]);
 
     // Check that the response is a redirect (successful deletion)
@@ -197,20 +197,20 @@ test("a single driver can be deleted", function () {
     $response->assertRedirect(route('driver.index'));
 });
 
-test("all drivers can be deleted", function () {
+test('all drivers can be deleted', function () {
     // Arrange: Create an authenticated user and multiple Drivers
     ['user' => $user, 'company' => $company, 'drivers' => $drivers] = createMultipleDriversWithDependencies();
 
     // Act: Send DELETE request to delete all Drivers
     $response = $this->actingAs($user)
         ->delete(route('driver.destroyMultiple'), [
-            'driver_ids' => $drivers->pluck('id')->toArray()
+            'driver_ids' => $drivers->pluck('id')->toArray(),
         ]);
 
     // Assert: Check that the Drivers were deleted from the database
     foreach ($drivers as $driver) {
         $this->assertDatabaseMissing('drivers', [
-            'id' => $driver->id
+            'id' => $driver->id,
         ]);
     }
 

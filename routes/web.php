@@ -13,10 +13,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-
-require __DIR__ . '/settings.php';
-require __DIR__ . '/auth.php';
-require __DIR__ . '/driver.php';
-require __DIR__ . '/trailer.php';
-require __DIR__ . '/truck.php';
-require __DIR__ . '/company.php';
+require __DIR__.'/settings.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/driver.php';
+require __DIR__.'/trailer.php';
+require __DIR__.'/truck.php';
+require __DIR__.'/company.php';
