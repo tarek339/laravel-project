@@ -46,7 +46,7 @@ class DriverController extends Controller
 
         Driver::create($validated);
 
-        return redirect()->route('driver.index');
+        return redirect()->route('drivers.index')->with('success', __('Driver created successfully.'));
     }
 
     /**
@@ -87,7 +87,7 @@ class DriverController extends Controller
 
         $driver->update($validated);
 
-        return redirect()->route('driver.index');
+        return redirect()->route('drivers.index')->with('success', __('Driver updated successfully.'));
     }
 
     /**
@@ -97,7 +97,7 @@ class DriverController extends Controller
     {
         $driver->delete();
 
-        return redirect()->route('driver.index');
+        return redirect()->route('drivers.index')->with('success', __('Driver deleted successfully.'));
     }
 
     /**
@@ -108,11 +108,11 @@ class DriverController extends Controller
         $driverIds = $request->input('driver_ids', []);
 
         if (empty($driverIds)) {
-            return redirect()->route('driver.index');
+            return redirect()->route('drivers.index')->with('error', __('No drivers selected for deletion.'));
         }
 
         Driver::whereIn('id', $driverIds)->delete();
 
-        return redirect()->route('driver.index');
+        return redirect()->route('drivers.index')->with('success', __('Selected drivers deleted successfully.'));
     }
 }
