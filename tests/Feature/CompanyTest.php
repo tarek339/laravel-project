@@ -123,6 +123,7 @@ test('companies profile can be edited', function () {
     // Check specific redirect to the Driver list
     $response->assertRedirect(route('companies.index'));
 });
+
 test('a single company can be deleted', function () {
     // Arrange: Create an authenticated user and a company
     $user = User::factory()->create();

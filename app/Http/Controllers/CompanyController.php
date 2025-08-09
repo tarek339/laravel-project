@@ -90,7 +90,6 @@ class CompanyController extends Controller
         return redirect()->route('companies.index')->with('success', __('Company deleted successfully.'));
     }
 
-
     /**
      * Bulk delete companies.
      */
