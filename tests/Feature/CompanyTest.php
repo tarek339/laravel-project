@@ -143,7 +143,7 @@ test('a single company can be deleted', function () {
     $response->assertRedirect(route('companies.index'));
 });
 
-test('all companies can be deleted', function () {
+test('multiple companies can be deleted', function () {
     // Arrange: Create an authenticated user and multiple companies
     $user = User::factory()->create();
     Company::factory()->count(3)->create(['user_id' => $user->id]);

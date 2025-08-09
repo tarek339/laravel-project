@@ -158,7 +158,7 @@ test('a single driver can be deleted', function () {
     $response->assertRedirect(route('drivers.index'));
 });
 
-test('all drivers can be deleted', function () {
+test('multiple drivers can be deleted', function () {
     // Arrange: Create an authenticated user and multiple Drivers
     ['user' => $user, 'company' => $company, 'drivers' => $drivers] = createMultipleDriversWithDependencies();
 
