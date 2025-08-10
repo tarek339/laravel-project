@@ -11,7 +11,14 @@ test('profile page is displayed', function () {
         ->actingAs($user)
         ->get('/settings/profile');
 
-    $response->assertOk();
+    $response
+        ->assertOk()
+        ->assertInertia(
+            fn ($page) => $page
+                ->component('settings/profile')  // ← Checks the React component
+                ->has('user')                    // ← Checks the user data
+                ->where('user.email', $user->email)  // ← Checks specific data
+        );
 });
 
 test('profile information can be updated', function () {
