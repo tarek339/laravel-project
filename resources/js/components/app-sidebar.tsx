@@ -15,7 +15,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: "Drivers",
-        href: "/driver",
+        href: "/drivers",
         icon: LayoutGrid,
     },
     {
