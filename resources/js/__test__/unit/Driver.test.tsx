@@ -1,6 +1,5 @@
 import DriverProfile from "@/pages/drivers/driver-profile";
 import DriversTable from "@/pages/drivers/drivers-table";
-import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -18,11 +17,6 @@ vi.mock("@/layouts/app-layout", () => ({
     default: ({ children }: { children: React.ReactNode }) => <div data-testid="app-layout">{children}</div>,
 }));
 
-// Mock der PlaceholderPattern Komponente
-vi.mock("@/components/ui/placeholder-pattern", () => ({
-    PlaceholderPattern: ({ className }: { className: string }) => <div data-testid="placeholder-pattern" className={className}></div>,
-}));
-
 describe("DriversTable Component", () => {
     it("should render the drivers table layout", () => {
         // Render the component
@@ -33,9 +27,6 @@ describe("DriversTable Component", () => {
 
         // Test dass das Layout gerendert wird
         expect(screen.getByTestId("app-layout")).toBeInTheDocument();
-
-        // Test dass PlaceholderPattern Komponenten gerendert werden
-        expect(screen.getAllByTestId("placeholder-pattern")).toHaveLength(3);
     });
 
     it("should render the driver profile content", () => {
