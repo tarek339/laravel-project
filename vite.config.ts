@@ -2,7 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import laravel from "laravel-vite-plugin";
 import { resolve } from "node:path";
-import { defineConfig } from "vite";
+import { defineConfig, UserConfig } from "vite";
 
 export default defineConfig({
     plugins: [
@@ -23,4 +23,10 @@ export default defineConfig({
             "ziggy-js": resolve(__dirname, "vendor/tightenco/ziggy"),
         },
     },
-});
+    test: {
+        environment: "jsdom",
+        globals: true,
+        setupFiles: "/resources/js/__test__/setup.ts",
+        exclude: ["**/node_modules/**", "**/vendor/**", "**/bootstrap/**", "**/storage/**"],
+    },
+} as UserConfig);
