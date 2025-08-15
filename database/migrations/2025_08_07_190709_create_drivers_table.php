@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
-            $table->string('license_number')->unique();
+            $table->string('license_number');
             $table->date('license_expiry_date')->nullable();
             $table->string('driver_card_number')->nullable();
             $table->date('driver_card_expiry_date')->nullable();

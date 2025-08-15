@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->string('license_plate')->unique();
-            $table->string('identification_number')->unique();
+            $table->string('identification_number');
             $table->date('next_major_inspection')->nullable();
             $table->date('next_safety_inspection')->nullable();
             $table->text('additional_information')->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trailer');
+        Schema::dropIfExists('trailers');
     }
 };
