@@ -3,16 +3,27 @@
 namespace App\Console\Commands;
 
 use App\Models\Driver;
-use Illuminate\Console\Command; // Model-Klasse importieren
+use Illuminate\Console\Command;
 
 class CheckDriversCommand extends Command
 {
-    protected $signature = 'check:drivers';
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'app:check-drivers-command';
 
-    protected $description = 'Check driver license expiry dates';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command to check drivers licenses, cards, and qualifications expiry dates';
 
-    protected $driversLicenseExpirations = [];
-
+    /**
+     * Execute the console command.
+     */
     public function handle()
     {
         // Get drivers whose licenses expire in the next one or two months
