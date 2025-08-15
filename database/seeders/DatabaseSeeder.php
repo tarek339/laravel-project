@@ -17,18 +17,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create 5 User, with 3 Companies each, and each Company having 10 Trucks, Trailers, and Drivers
-        $users = User::factory()->count(5)->create();
+        // Create 10 User, with 3 Companies each, and each Company having 10 Trucks, Trailers, and Drivers
+        $users = User::factory()->count(10)->create();
 
         foreach ($users as $user) {
-            // Create 3 Companies for each User
-            $companies = Company::factory()->count(3)->create(['user_id' => $user->id]);
+            // Create 6 Companies for each User
+            $companies = Company::factory()->count(6)->create(['user_id' => $user->id]);
 
             foreach ($companies as $company) {
-                // Create 10 Drivers, Trucks, and Trailers for each Company
-                Driver::factory()->count(10)->create(['company_id' => $company->id]);
-                Truck::factory()->count(10)->create(['company_id' => $company->id]);
-                Trailer::factory()->count(10)->create(['company_id' => $company->id]);
+                // Create 30 Drivers, 30 Trucks, and 30 Trailers for each Company
+                Driver::factory()->count(30)->create(['company_id' => $company->id]);
+                Truck::factory()->count(30)->create(['company_id' => $company->id]);
+                Trailer::factory()->count(30)->create(['company_id' => $company->id]);
             }
         }
     }

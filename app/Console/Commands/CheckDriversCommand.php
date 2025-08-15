@@ -105,6 +105,13 @@ class CheckDriversCommand extends Command
         return $drivers;
     }
 
+    /**
+     * Check drivers' qualifications and return an array of drivers with their details.
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection  $driversQualificationExpiresInOneMonth
+     * @param  \Illuminate\Database\Eloquent\Collection  $driversQualificationExpiresInTwoMonth
+     * @return array
+     */
     private function checkQualification($driversQualificationExpiresInOneMonth, $driversQualificationExpiresInTwoMonth)
     {
         $drivers = [];
