@@ -62,6 +62,8 @@ test('a driver can be added', function () {
         'state' => 'CA',
         'country' => 'USA',
         'additional_information' => 'No additional information',
+        'assigned_to' => null,
+        'is_active' => false,
     ];
 
     // Act: Send POST request to add a Driver
@@ -123,6 +125,8 @@ test('drivers profile can be edited', function () {
         'state' => 'NY',
         'country' => 'USA',
         'additional_information' => 'No additional information',
+        'assigned_to' => 'AB-C-123',
+        'is_active' => true,
     ];
 
     // Act: Send PUT request to update the Driver

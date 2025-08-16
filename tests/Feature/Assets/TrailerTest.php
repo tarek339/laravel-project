@@ -50,6 +50,8 @@ test('a trailer can be added', function () {
         'next_major_inspection' => '2025-12-31',
         'next_safety_inspection' => '2025-12-31',
         'additional_information' => 'No additional information',
+        'assigned_to' => null,
+        'is_active' => false,
     ];
 
     // Act: Send POST request to add a Trailer
@@ -94,11 +96,13 @@ test('trailers profile can be edited', function () {
     // Prepare the updated Trailer data
     $updatedTrailerData = [
         'company_id' => $company->id,
-        'license_plate' => 'AB-C-456',
+        'license_plate' => 'AB-C-654',
         'identification_number' => 'ID654321',
         'next_major_inspection' => '2026-12-31',
         'next_safety_inspection' => '2026-12-31',
         'additional_information' => 'No additional information',
+        'assigned_to' => 'AB-C-456',
+        'is_active' => true,
     ];
 
     // Act: Send PUT request to update the Trailer

@@ -18,6 +18,9 @@ class Truck extends Model
         'next_safety_inspection',
         'next_tachograph_inspection',
         'additional_information',
+        'assigned_to_trailer',
+        'assigned_to_driver',
+        'is_active',
     ];
 
     /**

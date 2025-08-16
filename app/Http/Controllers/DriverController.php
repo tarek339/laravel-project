@@ -42,6 +42,8 @@ class DriverController extends Controller
             'state' => 'required|string|max:255',
             'country' => 'required|string|max:255',
             'additional_information' => 'nullable|string|max:1000',
+            'assigned_to' => 'nullable|string|max:255',
+            'is_active' => 'boolean',
         ]);
 
         Driver::create($validated);
@@ -83,6 +85,8 @@ class DriverController extends Controller
             'state' => 'required|string|max:255',
             'country' => 'required|string|max:255',
             'additional_information' => 'nullable|string|max:1000',
+            'assigned_to' => 'nullable|string|max:255',
+            'is_active' => 'boolean',
         ]);
 
         $driver->update($validated);

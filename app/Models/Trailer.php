@@ -17,6 +17,8 @@ class Trailer extends Model
         'next_major_inspection',
         'next_safety_inspection',
         'additional_information',
+        'assigned_to',
+        'is_active',
     ];
 
     /**

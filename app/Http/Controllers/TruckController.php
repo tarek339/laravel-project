@@ -31,6 +31,9 @@ class TruckController extends Controller
             'next_safety_inspection' => 'required|date',
             'next_tachograph_inspection' => 'required|date',
             'additional_information' => 'nullable|string|max:1000',
+            'assigned_to_trailer' => 'nullable|string|max:255',
+            'assigned_to_driver' => 'nullable|string|max:255',
+            'is_active' => 'boolean',
         ]);
 
         Truck::create($validated);
@@ -61,6 +64,9 @@ class TruckController extends Controller
             'next_safety_inspection' => 'required|date',
             'next_tachograph_inspection' => 'required|date',
             'additional_information' => 'nullable|string|max:1000',
+            'assigned_to_trailer' => 'nullable|string|max:255',
+            'assigned_to_driver' => 'nullable|string|max:255',
+            'is_active' => 'boolean',
         ]);
 
         $truck->update($validated);
