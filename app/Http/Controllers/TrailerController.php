@@ -30,6 +30,8 @@ class TrailerController extends Controller
             'next_major_inspection' => 'required|date',
             'next_safety_inspection' => 'required|date',
             'additional_information' => 'nullable|string|max:1000',
+            'assigned_to' => 'nullable|string|max:255',
+            'is_active' => 'boolean',
         ]);
 
         Trailer::create($validated);
@@ -59,6 +61,8 @@ class TrailerController extends Controller
             'next_major_inspection' => 'required|date',
             'next_safety_inspection' => 'required|date',
             'additional_information' => 'nullable|string|max:1000',
+            'assigned_to' => 'nullable|string|max:255',
+            'is_active' => 'boolean',
         ]);
 
         $trailer->update($validated);

@@ -51,6 +51,9 @@ test('a truck can be added', function () {
         'next_safety_inspection' => '2025-12-31',
         'next_tachograph_inspection' => '2025-12-31',
         'additional_information' => 'No additional information',
+        'assigned_to_trailer' => null,
+        'assigned_to_driver' => null,
+        'is_active' => false,
     ];
 
     // Act: Send POST request to add a Truck
@@ -101,6 +104,9 @@ test('trucks profile can be edited', function () {
         'next_safety_inspection' => '2026-12-31',
         'next_tachograph_inspection' => '2026-12-31',
         'additional_information' => 'No additional information',
+        'assigned_to_trailer' => 'AB-C-654',
+        'assigned_to_driver' => 'Jon Doe',
+        'is_active' => true,
     ];
 
     // Act: Send PUT request to update the Truck

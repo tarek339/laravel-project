@@ -29,6 +29,8 @@ class Driver extends Model
         'state',
         'country',
         'additional_information',
+        'assigned_to',
+        'is_active',
     ];
 
     /**
