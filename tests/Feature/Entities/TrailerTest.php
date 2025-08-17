@@ -40,7 +40,7 @@ test('a trailer can be added', function () {
     // Arrange: Create an authenticated user
     $user = User::factory()->create();
 
-    // Create a Company for the Driver
+    // Create a Company for the Trailer
     $company = Company::factory()->create(['user_id' => $user->id]);
 
     // Prepare the Trailer data
@@ -187,4 +187,40 @@ test('should assign a truck to the trailer', function () {
     // Check that the response is successful
     $response->assertStatus(200)
         ->assertJson(['message' => 'Truck assigned to trailer successfully.']);
+});
+
+test('should set the trailer as active', function () {
+    ['user' => $user, 'company' => $company, 'trailer' => $trailer] = createTrailerWithDependencies();
+
+    // Act: Send POST request to set the Trailer as active
+    $response = $this->actingAs($user)
+        ->post(route('trailer.setActive', $trailer->id));
+
+    // Find the Trailer
+    $trailer = Trailer::find($trailer->id);
+
+    // Assert that the Trailer is now active
+    $this->assertTrue((bool) $trailer->is_active);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Trailer set to active successfully.']);
+});
+
+test('should set the trailer as inactive', function () {
+    ['user' => $user, 'company' => $company, 'trailer' => $trailer] = createTrailerWithDependencies();
+
+    // Act: Send POST request to set the Trailer as inactive
+    $response = $this->actingAs($user)
+        ->post(route('trailer.setInactive', $trailer->id));
+
+    // Find the Trailer
+    $trailer = Trailer::find($trailer->id);
+
+    // Assert that the Trailer is now inactive
+    $this->assertFalse((bool) $trailer->is_active);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Trailer set to inactive successfully.']);
 });

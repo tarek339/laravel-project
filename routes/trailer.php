@@ -18,4 +18,8 @@ Route::middleware('auth')->group(function () {
         ->name('trailers.destroyMultiple');
     Route::post('/trailers/{trailer}/assign-truck', [TrailerController::class, 'assignTruck'])
         ->name('trailer.assignTruck');
+    Route::post('/trailers/{trailer}/set-active', [TrailerController::class, 'setActive'])
+        ->name('trailer.setActive');
+    Route::post('/trailers/{trailer}/set-inactive', [TrailerController::class, 'setInactive'])
+        ->name('trailer.setInactive');
 });

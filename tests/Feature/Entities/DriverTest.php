@@ -209,3 +209,39 @@ test('should assign a truck to the driver', function () {
     $response->assertStatus(200)
         ->assertJson(['message' => 'Truck assigned to driver successfully.']);
 });
+
+test('should set the driver as active', function () {
+    ['user' => $user, 'company' => $company, 'driver' => $driver] = createDriverWithDependencies();
+
+    // Act: Send POST request to set the Driver as active
+    $response = $this->actingAs($user)
+        ->post(route('driver.setActive', $driver->id));
+
+    // Find the Driver
+    $driver = Driver::find($driver->id);
+
+    // Assert that the Driver is now active
+    $this->assertTrue((bool) $driver->is_active);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Driver set to active successfully.']);
+});
+
+test('should set the driver as inactive', function () {
+    ['user' => $user, 'company' => $company, 'driver' => $driver] = createDriverWithDependencies();
+
+    // Act: Send POST request to set the Driver as inactive
+    $response = $this->actingAs($user)
+        ->post(route('driver.setInactive', $driver->id));
+
+    // Find the Driver
+    $driver = Driver::find($driver->id);
+
+    // Assert that the Driver is now inactive
+    $this->assertFalse((bool) $driver->is_active);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Driver set to inactive successfully.']);
+});
