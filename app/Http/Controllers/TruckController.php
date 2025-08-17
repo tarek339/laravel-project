@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Driver;
+use App\Models\Trailer;
 use App\Models\Truck;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -113,6 +115,52 @@ class TruckController extends Controller
             return redirect()->route('trucks.index')->with('success', __('Selected trucks deleted successfully.'));
         } catch (\Exception $e) {
             return redirect()->route('trucks.index')->with('error', __('Error deleting trucks: ').$e->getMessage());
+        }
+    }
+
+    /**
+     * Assign a driver to the truck.
+     */
+    public function assignDriver(Request $request, Truck $truck)
+    {
+        try {
+            $validated = $request->validate([
+                'driver_id' => 'required|exists:drivers,id',
+            ]);
+
+            $driver = Driver::findOrFail($validated['driver_id'])
+                ->where('company_id', $truck->company_id)
+                ->firstOrFail();
+
+            $driver->update(['assigned_to' => $truck->license_plate]);
+            $truck->update(['assigned_to_driver' => $driver->first_name.' '.$driver->last_name]);
+
+            return response()->json(['message' => 'Driver assigned to truck successfully.']);
+        } catch (\Exception $e) {
+            return redirect()->route('trucks.index')->with('error', __('Error assigning driver to truck: ').$e->getMessage());
+        }
+    }
+
+    /**
+     * Assign a trailer to the truck.
+     */
+    public function assignTrailer(Request $request, Truck $truck)
+    {
+        try {
+            $validated = $request->validate([
+                'trailer_id' => 'required|exists:trailers,id',
+            ]);
+
+            $trailer = Trailer::findOrFail($validated['trailer_id'])
+                ->where('company_id', $truck->company_id)
+                ->firstOrFail();
+
+            $trailer->update(['assigned_to' => $truck->license_plate]);
+            $truck->update(['assigned_to_trailer' => $trailer->license_plate]);
+
+            return response()->json(['message' => 'Trailer assigned to truck successfully.']);
+        } catch (\Exception $e) {
+            return redirect()->route('trucks.index')->with('error', __('Error assigning trailer to truck: ').$e->getMessage());
         }
     }
 }

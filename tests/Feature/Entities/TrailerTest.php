@@ -2,6 +2,7 @@
 
 use App\Models\Company;
 use App\Models\Trailer;
+use App\Models\Truck;
 use App\Models\User;
 
 function createTrailerWithDependencies(): array
@@ -160,4 +161,30 @@ test('multiple trailers can be deleted', function () {
 
     // Check specific redirect to the Trailer list
     $response->assertRedirect(route('trailers.index'));
+});
+
+test('should assign a truck to the trailer', function () {
+    // Arrange: Create an authenticated user and a Trailer
+    ['user' => $user, 'company' => $company, 'trailer' => $trailer] = createTrailerWithDependencies();
+
+    // Create a Truck for the Trailer
+    $truck = Truck::factory()->create(['company_id' => $company->id]);
+
+    // Act: Send POST request to assign the Truck to the Trailer
+    $response = $this->actingAs($user)
+        ->post(route('trailer.assignTruck', $trailer->id), [
+            'truck_id' => $truck->id,
+        ]);
+
+    // Find both Entities
+    $truck = Truck::find($truck->id);
+    $trailer = Trailer::find($trailer->id);
+
+    // Assert that the relationships are correctly set
+    $this->assertEquals($trailer->license_plate, $truck->assigned_to_trailer);
+    $this->assertEquals($truck->license_plate, $trailer->assigned_to);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Truck assigned to trailer successfully.']);
 });
