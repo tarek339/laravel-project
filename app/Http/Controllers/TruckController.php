@@ -163,4 +163,32 @@ class TruckController extends Controller
             return redirect()->route('trucks.index')->with('error', __('Error assigning trailer to truck: ').$e->getMessage());
         }
     }
+
+    /**
+     * Set the specified truck as active.
+     */
+    public function setActive(Request $request, Truck $truck)
+    {
+        try {
+            $truck->update(['is_active' => true]);
+
+            return response()->json(['message' => 'Truck set to active successfully.']);
+        } catch (\Exception $e) {
+            return redirect()->route('trucks.index')->with('error', __('Error setting truck to active: ').$e->getMessage());
+        }
+    }
+
+    /**
+     * Set the specified truck as inactive.
+     */
+    public function setInactive(Request $request, Truck $truck)
+    {
+        try {
+            $truck->update(['is_active' => false]);
+
+            return response()->json(['message' => 'Truck set to inactive successfully.']);
+        } catch (\Exception $e) {
+            return redirect()->route('trucks.index')->with('error', __('Error setting truck to inactive: ').$e->getMessage());
+        }
+    }
 }

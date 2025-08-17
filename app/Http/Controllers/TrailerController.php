@@ -113,6 +113,9 @@ class TrailerController extends Controller
         }
     }
 
+    /**
+     * Assign a truck to the trailer.
+     */
     public function assignTruck(Request $request, Trailer $trailer)
     {
         try {
@@ -130,6 +133,34 @@ class TrailerController extends Controller
             return response()->json(['message' => 'Truck assigned to trailer successfully.']);
         } catch (\Exception $e) {
             return redirect()->route('trailers.index')->with('error', __('Error assigning truck to trailer: ').$e->getMessage());
+        }
+    }
+
+    /**
+     * Set the trailer as active.
+     */
+    public function setActive(Request $request, Trailer $trailer)
+    {
+        try {
+            $trailer->update(['is_active' => true]);
+
+            return response()->json(['message' => 'Trailer set to active successfully.']);
+        } catch (\Exception $e) {
+            return redirect()->route('trailers.index')->with('error', __('Error setting trailer active: ').$e->getMessage());
+        }
+    }
+
+    /**
+     * Set the trailer as inactive.
+     */
+    public function setInactive(Request $request, Trailer $trailer)
+    {
+        try {
+            $trailer->update(['is_active' => false]);
+
+            return response()->json(['message' => 'Trailer set to inactive successfully.']);
+        } catch (\Exception $e) {
+            return redirect()->route('trailers.index')->with('error', __('Error setting trailer inactive: ').$e->getMessage());
         }
     }
 }

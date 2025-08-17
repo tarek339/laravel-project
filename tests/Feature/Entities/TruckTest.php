@@ -219,3 +219,39 @@ test('should assign a trailer to the truck', function () {
     $response->assertStatus(200)
         ->assertJson(['message' => 'Trailer assigned to truck successfully.']);
 });
+
+test('should set the truck as active', function () {
+    ['user' => $user, 'company' => $company, 'truck' => $truck] = createTruckWithDependencies();
+
+    // Act: Send POST request to set the Truck as active
+    $response = $this->actingAs($user)
+        ->post(route('truck.setActive', $truck->id));
+
+    // Find the Truck
+    $truck = Truck::find($truck->id);
+
+    // Assert that the Truck is now active
+    $this->assertTrue((bool) $truck->is_active);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Truck set to active successfully.']);
+});
+
+test('should set the truck as inactive', function () {
+    ['user' => $user, 'company' => $company, 'truck' => $truck] = createTruckWithDependencies();
+
+    // Act: Send POST request to set the Truck as inactive
+    $response = $this->actingAs($user)
+        ->post(route('truck.setInactive', $truck->id));
+
+    // Find the Truck
+    $truck = Truck::find($truck->id);
+
+    // Assert that the Truck is now inactive
+    $this->assertFalse((bool) $truck->is_active);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Truck set to inactive successfully.']);
+});

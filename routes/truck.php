@@ -20,4 +20,8 @@ Route::middleware('auth')->group(function () {
         ->name('truck.assignDriver');
     Route::post('/trucks/{truck}/assign-trailer', [TruckController::class, 'assignTrailer'])
         ->name('truck.assignTrailer');
+    Route::post('/trucks/{truck}/set-active', [TruckController::class, 'setActive'])
+        ->name('truck.setActive');
+    Route::post('/trucks/{truck}/set-inactive', [TruckController::class, 'setInactive'])
+        ->name('truck.setInactive');
 });

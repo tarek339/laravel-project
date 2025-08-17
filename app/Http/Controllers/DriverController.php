@@ -159,4 +159,32 @@ class DriverController extends Controller
             return response()->json(['error' => 'Truck assignment failed: '.$e->getMessage()], 400);
         }
     }
+
+    /**
+     * Set the specified driver as active.
+     */
+    public function setActive(Request $request, Driver $driver)
+    {
+        try {
+            $driver->update(['is_active' => true]);
+
+            return response()->json(['message' => 'Driver set to active successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to set driver active: '.$e->getMessage()], 400);
+        }
+    }
+
+    /**
+     * Set the specified driver as inactive.
+     */
+    public function setInactive(Request $request, Driver $driver)
+    {
+        try {
+            $driver->update(['is_active' => false]);
+
+            return response()->json(['message' => 'Driver set to inactive successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to set driver inactive: '.$e->getMessage()], 400);
+        }
+    }
 }
