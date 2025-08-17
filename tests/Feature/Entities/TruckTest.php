@@ -168,7 +168,7 @@ test('multiple trucks can be deleted', function () {
     $response->assertRedirect(route('trucks.index'));
 });
 
-test('should assign a driver to the truck', function () {
+test('should assign a driver to the truck from profile', function () {
     // Arrange: Create an authenticated user and a Truck
     ['user' => $user, 'company' => $company, 'truck' => $truck] = createTruckWithDependencies();
 
@@ -194,7 +194,34 @@ test('should assign a driver to the truck', function () {
         ->assertJson(['message' => 'Driver assigned to truck successfully.']);
 });
 
-test('should assign a trailer to the truck', function () {
+test('should assign a driver to the truck from table', function () {
+    // Arrange: Create an authenticated user and a Truck
+    ['user' => $user, 'company' => $company, 'truck' => $truck] = createTruckWithDependencies();
+
+    // Create a Driver for the Truck
+    $driver = Driver::factory()->create(['company_id' => $company->id]);
+
+    // Act: Send POST request to assign the Driver to the Truck
+    $response = $this->actingAs($user)
+        ->post(route('truck.assignDriverFromTable'), [
+            'driver_id' => $driver->id,
+            'truck_id' => $truck->id,
+        ]);
+
+    // Find both Entities
+    $driver = Driver::find($driver->id);
+    $truck = Truck::find($truck->id);
+
+    // Assert that the relationships are correctly set
+    $this->assertEquals($truck->license_plate, $driver->assigned_to);
+    $this->assertEquals($driver->first_name.' '.$driver->last_name, $truck->assigned_to_driver);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Driver assigned to truck successfully.']);
+});
+
+test('should assign a trailer to the truck from profile', function () {
     // Arrange: Create an authenticated user and a Truck
     ['user' => $user, 'company' => $company, 'truck' => $truck] = createTruckWithDependencies();
 
@@ -205,6 +232,33 @@ test('should assign a trailer to the truck', function () {
     $response = $this->actingAs($user)
         ->post(route('truck.assignTrailer', $truck->id), [
             'trailer_id' => $trailer->id,
+        ]);
+
+    // Find both Entities
+    $truck = Truck::find($truck->id);
+    $trailer = Trailer::find($trailer->id);
+
+    // Assert that the relationships are correctly set
+    $this->assertEquals($truck->license_plate, $trailer->assigned_to);
+    $this->assertEquals($trailer->license_plate, $truck->assigned_to_trailer);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Trailer assigned to truck successfully.']);
+});
+
+test('should assign a trailer to the truck from table', function () {
+    // Arrange: Create an authenticated user and a Truck
+    ['user' => $user, 'company' => $company, 'truck' => $truck] = createTruckWithDependencies();
+
+    // Create a Trailer for the Truck
+    $trailer = Trailer::factory()->create(['company_id' => $company->id]);
+
+    // Act: Send POST request to assign the Trailer to the Truck
+    $response = $this->actingAs($user)
+        ->post(route('truck.assignTrailerFromTable'), [
+            'trailer_id' => $trailer->id,
+            'truck_id' => $truck->id,
         ]);
 
     // Find both Entities

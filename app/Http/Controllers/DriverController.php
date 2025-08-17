@@ -138,7 +138,7 @@ class DriverController extends Controller
     }
 
     /**
-     * Assign a truck to the driver.
+     * Assign a truck to the driver from profile.
      */
     public function assignTruck(Request $request, Driver $driver)
     {
@@ -147,6 +147,31 @@ class DriverController extends Controller
                 'truck_id' => 'required|exists:trucks,id',
             ]);
 
+            $truck = Truck::where('id', $validated['truck_id'])
+                ->where('company_id', $driver->company_id)
+                ->firstOrFail();
+
+            $driver->update(['assigned_to' => $truck->license_plate]);
+            $truck->update(['assigned_to_driver' => $driver->first_name.' '.$driver->last_name]);
+
+            return response()->json(['message' => 'Truck assigned to driver successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Truck assignment failed: '.$e->getMessage()], 400);
+        }
+    }
+
+    /**
+     * Assign a truck to the driver from table.
+     */
+    public function assignTruckFromTable(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'truck_id' => 'required|exists:trucks,id',
+                'driver_id' => 'required|exists:drivers,id',
+            ]);
+
+            $driver = Driver::findOrFail($request->input('driver_id'));
             $truck = Truck::where('id', $validated['truck_id'])
                 ->where('company_id', $driver->company_id)
                 ->firstOrFail();

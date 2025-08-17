@@ -18,8 +18,12 @@ Route::middleware('auth')->group(function () {
         ->name('trucks.destroyMultiple');
     Route::post('/trucks/{truck}/assign-driver', [TruckController::class, 'assignDriver'])
         ->name('truck.assignDriver');
+    Route::post('/trucks/assign-driver-from-table', [TruckController::class, 'assignDriverFromTable'])
+        ->name('truck.assignDriverFromTable');
     Route::post('/trucks/{truck}/assign-trailer', [TruckController::class, 'assignTrailer'])
         ->name('truck.assignTrailer');
+    Route::post('/trucks/assign-trailer-from-table', [TruckController::class, 'assignTrailerFromTable'])
+        ->name('truck.assignTrailerFromTable');
     Route::post('/trucks/{truck}/set-active', [TruckController::class, 'setActive'])
         ->name('truck.setActive');
     Route::post('/trucks/{truck}/set-inactive', [TruckController::class, 'setInactive'])

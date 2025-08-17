@@ -11,6 +11,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/drivers/{driver}', [DriverController::class, 'destroy'])->name('driver.destroy');
     Route::delete('/drivers', [DriverController::class, 'destroyMultiple'])->name('drivers.destroyMultiple');
     Route::post('drivers/{driver}/assign-truck', [DriverController::class, 'assignTruck'])->name('driver.assignTruck');
+    Route::post('drivers/assign-truck-from-table', [DriverController::class, 'assignTruckFromTable'])->name('driver.assignTruckFromTable');
     Route::post('drivers/{driver}/set-active', [DriverController::class, 'setActive'])->name('driver.setActive');
     Route::post('drivers/{driver}/set-inactive', [DriverController::class, 'setInactive'])->name('driver.setInactive');
 });
