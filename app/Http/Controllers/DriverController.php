@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Driver;
+use App\Models\Truck;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -118,5 +119,28 @@ class DriverController extends Controller
         Driver::whereIn('id', $driverIds)->delete();
 
         return redirect()->route('drivers.index')->with('success', __('Selected drivers deleted successfully.'));
+    }
+
+    /**
+     * Assign a truck to the driver.
+     */
+    public function assignTruck(Request $request, Driver $driver)
+    {
+        try {
+            $validated = $request->validate([
+                'truck_id' => 'required|exists:trucks,id',
+            ]);
+
+            $truck = Truck::where('id', $validated['truck_id'])
+                ->where('company_id', $driver->company_id)
+                ->firstOrFail();
+
+            $driver->update(['assigned_to' => $truck->license_plate]);
+            $truck->update(['assigned_to_driver' => $driver->first_name.' '.$driver->last_name]);
+
+            return response()->json(['message' => 'Truck assigned to driver successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Truck assignment failed: '.$e->getMessage()], 400);
+        }
     }
 }
