@@ -10,4 +10,5 @@ Route::middleware('auth')->group(function () {
     Route::put('/drivers/{driver}', [DriverController::class, 'update'])->name('driver.update');
     Route::delete('/drivers/{driver}', [DriverController::class, 'destroy'])->name('driver.destroy');
     Route::delete('/drivers', [DriverController::class, 'destroyMultiple'])->name('drivers.destroyMultiple');
+    Route::post('drivers/{driver}/assign-truck', [DriverController::class, 'assignTruck'])->name('driver.assignTruck');
 });

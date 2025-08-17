@@ -2,6 +2,7 @@
 
 use App\Models\Company;
 use App\Models\Driver;
+use App\Models\Truck;
 use App\Models\User;
 
 function createDriverWithDependencies(): array
@@ -184,4 +185,27 @@ test('multiple drivers can be deleted', function () {
 
     // Check specific redirect to the Driver list
     $response->assertRedirect(route('drivers.index'));
+});
+
+test('should assign a truck to the driver', function () {
+    ['user' => $user, 'company' => $company, 'driver' => $driver] = createDriverWithDependencies();
+    $truck = Truck::factory()->create(['company_id' => $company->id]);
+
+    // Act: Send POST request to assign the Truck to the Driver
+    $response = $this->actingAs($user)
+        ->post(route('driver.assignTruck', ['driver' => $driver->id]), [
+            'truck_id' => $truck->id,
+        ]);
+
+    // Find both Entities
+    $driver = Driver::find($driver->id);
+    $truck = Truck::find($truck->id);
+
+    // Assert that the relationships are correctly set
+    $this->assertEquals($truck->license_plate, $driver->assigned_to);
+    $this->assertEquals($driver->first_name.' '.$driver->last_name, $truck->assigned_to_driver);
+
+    // Check that the response is successful
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Truck assigned to driver successfully.']);
 });

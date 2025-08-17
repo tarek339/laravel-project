@@ -21,14 +21,14 @@ class DatabaseSeeder extends Seeder
         $users = User::factory()->count(10)->create();
 
         foreach ($users as $user) {
-            // Create 6 Companies for each User
-            $companies = Company::factory()->count(6)->create(['user_id' => $user->id]);
+            // Create 1 Company for each User
+            $companies = Company::factory()->count(1)->create(['user_id' => $user->id]);
 
             foreach ($companies as $company) {
-                // Create 30 Drivers, 30 Trucks, and 30 Trailers for each Company
-                Driver::factory()->count(30)->create(['company_id' => $company->id]);
-                Truck::factory()->count(30)->create(['company_id' => $company->id]);
-                Trailer::factory()->count(30)->create(['company_id' => $company->id]);
+                // Create 2 Drivers, 2 Trucks, and 2 Trailers for each Company
+                Driver::factory()->count(2)->create(['company_id' => $company->id]);
+                Truck::factory()->count(2)->create(['company_id' => $company->id]);
+                Trailer::factory()->count(2)->create(['company_id' => $company->id]);
             }
         }
     }
