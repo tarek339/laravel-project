@@ -16,4 +16,6 @@ Route::middleware('auth')->group(function () {
         ->name('trailer.destroy');
     Route::delete('/trailers', [TrailerController::class, 'destroyMultiple'])
         ->name('trailers.destroyMultiple');
+    Route::post('/trailers/{trailer}/assign-truck', [TrailerController::class, 'assignTruck'])
+        ->name('trailer.assignTruck');
 });

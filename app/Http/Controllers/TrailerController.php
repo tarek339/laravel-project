@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Trailer;
+use App\Models\Truck;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -109,6 +110,26 @@ class TrailerController extends Controller
             return redirect()->route('trailers.index')->with('success', __('Selected trailers deleted successfully.'));
         } catch (\Exception $e) {
             return redirect()->route('trailers.index')->with('error', __('Error deleting trailers: ').$e->getMessage());
+        }
+    }
+
+    public function assignTruck(Request $request, Trailer $trailer)
+    {
+        try {
+            $validated = $request->validate([
+                'truck_id' => 'required|exists:trucks,id',
+            ]);
+
+            $truck = Truck::where('id', $validated['truck_id'])
+                ->where('company_id', $trailer->company_id)
+                ->firstOrFail();
+
+            $truck->update(['assigned_to_trailer' => $trailer->license_plate]);
+            $trailer->update(['assigned_to' => $truck->license_plate]);
+
+            return response()->json(['message' => 'Truck assigned to trailer successfully.']);
+        } catch (\Exception $e) {
+            return redirect()->route('trailers.index')->with('error', __('Error assigning truck to trailer: ').$e->getMessage());
         }
     }
 }
