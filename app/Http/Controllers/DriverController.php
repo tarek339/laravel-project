@@ -24,32 +24,36 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'company_id' => 'required|exists:companies,id',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:drivers',
-            'phone' => 'required|string|max:255',
-            'license_number' => 'required|string|max:255',
-            'license_expiry_date' => 'required|date',
-            'driver_card_number' => 'required|string|max:255',
-            'driver_card_expiry_date' => 'required|date',
-            'driver_qualification_number' => 'required|string|max:255',
-            'driver_qualification_expiry_date' => 'required|date',
-            'street' => 'required|string|max:255',
-            'house_number' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'additional_information' => 'nullable|string|max:1000',
-            'assigned_to' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'company_id' => 'required|exists:companies,id',
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:drivers',
+                'phone' => 'required|string|max:255',
+                'license_number' => 'required|string|max:255',
+                'license_expiry_date' => 'required|date',
+                'driver_card_number' => 'required|string|max:255',
+                'driver_card_expiry_date' => 'required|date',
+                'driver_qualification_number' => 'required|string|max:255',
+                'driver_qualification_expiry_date' => 'required|date',
+                'street' => 'required|string|max:255',
+                'house_number' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'postal_code' => 'required|string|max:255',
+                'state' => 'required|string|max:255',
+                'country' => 'required|string|max:255',
+                'additional_information' => 'nullable|string|max:1000',
+                'assigned_to' => 'nullable|string|max:255',
+                'is_active' => 'boolean',
+            ]);
 
-        Driver::create($validated);
+            Driver::create($validated);
 
-        return redirect()->route('drivers.index')->with('success', __('Driver created successfully.'));
+            return redirect()->route('drivers.index')->with('success', __('Driver created successfully.'));
+        } catch (\Exception $e) {
+            return redirect()->route('drivers.index')->with('error', __('Error creating driver: ').$e->getMessage());
+        }
     }
 
     /**
@@ -67,32 +71,36 @@ class DriverController extends Controller
      */
     public function update(Request $request, Driver $driver)
     {
-        $validated = $request->validate([
-            'company_id' => 'required|exists:companies,id',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:drivers,email,'.$driver->id,
-            'phone' => 'required|string|max:255',
-            'license_number' => 'required|string|max:255',
-            'license_expiry_date' => 'required|date',
-            'driver_card_number' => 'required|string|max:255',
-            'driver_card_expiry_date' => 'required|date',
-            'driver_qualification_number' => 'required|string|max:255',
-            'driver_qualification_expiry_date' => 'required|date',
-            'street' => 'required|string|max:255',
-            'house_number' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'additional_information' => 'nullable|string|max:1000',
-            'assigned_to' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'company_id' => 'required|exists:companies,id',
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:drivers,email,'.$driver->id,
+                'phone' => 'required|string|max:255',
+                'license_number' => 'required|string|max:255',
+                'license_expiry_date' => 'required|date',
+                'driver_card_number' => 'required|string|max:255',
+                'driver_card_expiry_date' => 'required|date',
+                'driver_qualification_number' => 'required|string|max:255',
+                'driver_qualification_expiry_date' => 'required|date',
+                'street' => 'required|string|max:255',
+                'house_number' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'postal_code' => 'required|string|max:255',
+                'state' => 'required|string|max:255',
+                'country' => 'required|string|max:255',
+                'additional_information' => 'nullable|string|max:1000',
+                'assigned_to' => 'nullable|string|max:255',
+                'is_active' => 'boolean',
+            ]);
 
-        $driver->update($validated);
+            $driver->update($validated);
 
-        return redirect()->route('drivers.index')->with('success', __('Driver updated successfully.'));
+            return redirect()->route('drivers.index')->with('success', __('Driver updated successfully.'));
+        } catch (\Exception $e) {
+            return redirect()->route('drivers.index')->with('error', __('Error updating driver: ').$e->getMessage());
+        }
     }
 
     /**
@@ -100,9 +108,13 @@ class DriverController extends Controller
      */
     public function destroy(Driver $driver)
     {
-        $driver->delete();
+        try {
+            $driver->delete();
 
-        return redirect()->route('drivers.index')->with('success', __('Driver deleted successfully.'));
+            return redirect()->route('drivers.index')->with('success', __('Driver deleted successfully.'));
+        } catch (\Exception $e) {
+            return redirect()->route('drivers.index')->with('error', __('Error deleting driver: ').$e->getMessage());
+        }
     }
 
     /**
@@ -110,15 +122,19 @@ class DriverController extends Controller
      */
     public function destroyMultiple(Request $request)
     {
-        $driverIds = $request->input('driver_ids', []);
+        try {
+            $driverIds = $request->input('driver_ids', []);
 
-        if (empty($driverIds)) {
-            return redirect()->route('drivers.index')->with('error', __('No drivers selected for deletion.'));
+            if (empty($driverIds)) {
+                return redirect()->route('drivers.index')->with('error', __('No drivers selected for deletion.'));
+            }
+
+            Driver::whereIn('id', $driverIds)->delete();
+
+            return redirect()->route('drivers.index')->with('success', __('Selected drivers deleted successfully.'));
+        } catch (\Exception $e) {
+            return redirect()->route('drivers.index')->with('error', __('Error deleting drivers: ').$e->getMessage());
         }
-
-        Driver::whereIn('id', $driverIds)->delete();
-
-        return redirect()->route('drivers.index')->with('success', __('Selected drivers deleted successfully.'));
     }
 
     /**

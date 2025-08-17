@@ -23,20 +23,24 @@ class TrailerController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'company_id' => 'required|exists:companies,id',
-            'license_plate' => 'required|string|max:255',
-            'identification_number' => 'required|string|max:255',
-            'next_major_inspection' => 'required|date',
-            'next_safety_inspection' => 'required|date',
-            'additional_information' => 'nullable|string|max:1000',
-            'assigned_to' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'company_id' => 'required|exists:companies,id',
+                'license_plate' => 'required|string|max:255',
+                'identification_number' => 'required|string|max:255',
+                'next_major_inspection' => 'required|date',
+                'next_safety_inspection' => 'required|date',
+                'additional_information' => 'nullable|string|max:1000',
+                'assigned_to' => 'nullable|string|max:255',
+                'is_active' => 'boolean',
+            ]);
 
-        Trailer::create($validated);
+            Trailer::create($validated);
 
-        return redirect()->route('trailers.index')->with('success', 'Trailer created successfully.');
+            return redirect()->route('trailers.index')->with('success', 'Trailer created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('trailers.index')->with('error', __('Error creating trailer: ').$e->getMessage());
+        }
     }
 
     /**
@@ -54,20 +58,24 @@ class TrailerController extends Controller
      */
     public function update(Request $request, Trailer $trailer)
     {
-        $validated = $request->validate([
-            'company_id' => 'required|exists:companies,id',
-            'license_plate' => 'required|string|max:255',
-            'identification_number' => 'required|string|max:255',
-            'next_major_inspection' => 'required|date',
-            'next_safety_inspection' => 'required|date',
-            'additional_information' => 'nullable|string|max:1000',
-            'assigned_to' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'company_id' => 'required|exists:companies,id',
+                'license_plate' => 'required|string|max:255',
+                'identification_number' => 'required|string|max:255',
+                'next_major_inspection' => 'required|date',
+                'next_safety_inspection' => 'required|date',
+                'additional_information' => 'nullable|string|max:1000',
+                'assigned_to' => 'nullable|string|max:255',
+                'is_active' => 'boolean',
+            ]);
 
-        $trailer->update($validated);
+            $trailer->update($validated);
 
-        return redirect()->route('trailers.index')->with('success', 'Trailer updated successfully.');
+            return redirect()->route('trailers.index')->with('success', 'Trailer updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('trailers.index')->with('error', __('Error updating trailer: ').$e->getMessage());
+        }
     }
 
     /**
@@ -75,9 +83,13 @@ class TrailerController extends Controller
      */
     public function destroy(Trailer $trailer)
     {
-        $trailer->delete();
+        try {
+            $trailer->delete();
 
-        return redirect()->route('trailers.index')->with('success', 'Trailer deleted successfully.');
+            return redirect()->route('trailers.index')->with('success', 'Trailer deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('trailers.index')->with('error', __('Error deleting trailer: ').$e->getMessage());
+        }
     }
 
     /**
@@ -85,14 +97,18 @@ class TrailerController extends Controller
      */
     public function destroyMultiple(Request $request)
     {
-        $trailerIds = $request->input('trailer_ids', []);
+        try {
+            $trailerIds = $request->input('trailer_ids', []);
 
-        if (empty($trailerIds)) {
-            return redirect()->route('trailers.index')->with('error', __('No trailers selected for deletion.'));
+            if (empty($trailerIds)) {
+                return redirect()->route('trailers.index')->with('error', __('No trailers selected for deletion.'));
+            }
+
+            Trailer::whereIn('id', $trailerIds)->delete();
+
+            return redirect()->route('trailers.index')->with('success', __('Selected trailers deleted successfully.'));
+        } catch (\Exception $e) {
+            return redirect()->route('trailers.index')->with('error', __('Error deleting trailers: ').$e->getMessage());
         }
-
-        Trailer::whereIn('id', $trailerIds)->delete();
-
-        return redirect()->route('trailers.index')->with('success', __('Selected trailers deleted successfully.'));
     }
 }
