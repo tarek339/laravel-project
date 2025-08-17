@@ -114,7 +114,7 @@ class TrailerController extends Controller
     }
 
     /**
-     * Assign a truck to the trailer.
+     * Assign a truck to the trailer from profile.
      */
     public function assignTruck(Request $request, Trailer $trailer)
     {
@@ -124,6 +124,31 @@ class TrailerController extends Controller
             ]);
 
             $truck = Truck::where('id', $validated['truck_id'])
+                ->where('company_id', $trailer->company_id)
+                ->firstOrFail();
+
+            $truck->update(['assigned_to_trailer' => $trailer->license_plate]);
+            $trailer->update(['assigned_to' => $truck->license_plate]);
+
+            return response()->json(['message' => 'Truck assigned to trailer successfully.']);
+        } catch (\Exception $e) {
+            return redirect()->route('trailers.index')->with('error', __('Error assigning truck to trailer: ').$e->getMessage());
+        }
+    }
+
+    /**
+     * Assign a truck to the trailer from table.
+     */
+    public function assignTruckFromTable(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'trailer_id' => 'required|exists:trailers,id',
+                'truck_id' => 'required|exists:trucks,id',
+            ]);
+
+            $trailer = Trailer::findOrFail($validated['trailer_id']);
+            $truck = Truck::findOrFail($validated['truck_id'])
                 ->where('company_id', $trailer->company_id)
                 ->firstOrFail();
 
