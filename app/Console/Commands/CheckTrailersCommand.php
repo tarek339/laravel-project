@@ -30,13 +30,15 @@ class CheckTrailersCommand extends Command
         $nextMajorInspectionInOneMonth = Trailer::whereDate('next_major_inspection', '=', now()->addDays(30)->toDateString())->get();
         $nextMajorInspectionInTwoMonths = Trailer::whereDate('next_major_inspection', '=', now()->addDays(60)->toDateString())->get();
 
-        $this->checkTrailersMajorInspection($nextMajorInspectionInOneMonth, $nextMajorInspectionInTwoMonths);
+        $expiring_major_inspections = $this->checkTrailersMajorInspection($nextMajorInspectionInOneMonth, $nextMajorInspectionInTwoMonths);
 
         // Check trailers' safety inspection is due in the next or two months
         $nextSafetyInspectionInOneMonth = Trailer::whereDate('next_safety_inspection', '=', now()->addDays(30)->toDateString())->get();
         $nextSafetyInspectionInTwoMonths = Trailer::whereDate('next_safety_inspection', '=', now()->addDays(60)->toDateString())->get();
 
-        $this->checkTrailersSafetyInspection($nextSafetyInspectionInOneMonth, $nextSafetyInspectionInTwoMonths);
+        $expiring_safety_inspections = $this->checkTrailersSafetyInspection($nextSafetyInspectionInOneMonth, $nextSafetyInspectionInTwoMonths);
+
+        $expiring_trailers = array_merge($expiring_major_inspections, $expiring_safety_inspections);
     }
 
     private function checkTrailersMajorInspection($nextMajorInspectionInOneMonth, $nextMajorInspectionInTwoMonths)
