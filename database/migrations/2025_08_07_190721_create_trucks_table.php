@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('trucks', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->string('license_plate')->unique();
             $table->string('identification_number');

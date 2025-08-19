@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('trailers', function (Blueprint $table) {
             $table->string('assigned_to')->nullable();
             $table->boolean('is_active')->default(false);
+            $table->timestamps();
         });
     }
 
