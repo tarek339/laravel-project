@@ -97,7 +97,7 @@ test('driver profile can be fetched', function () {
                 ->has(
                     'driver',
                     fn ($driverData) => $driverData
-                        ->where('id', $driver->id)
+                        ->where('id', $driver->id->toString())
                         ->etc()
                 )
         );

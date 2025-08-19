@@ -88,7 +88,7 @@ test('truck profile can be fetched', function () {
                 ->has(
                     'truck',
                     fn ($truckData) => $truckData
-                        ->where('id', $truck->id)
+                        ->where('id', $truck->id->toString())
                         ->etc()
                 )
         );

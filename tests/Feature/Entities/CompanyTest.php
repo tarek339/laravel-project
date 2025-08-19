@@ -84,7 +84,7 @@ test('company profile can be fetched', function () {
                 ->has(
                     'company',
                     fn ($companyData) => $companyData
-                        ->where('id', $company->id)
+                        ->where('id', $company->id->toString())
                         ->etc()
                 )
         );
@@ -92,7 +92,8 @@ test('company profile can be fetched', function () {
 
 test('companies profile can be edited', function () {
     $user = User::factory()->create();
-    Company::factory()->count(3)->create(['user_id' => $user->id]);
+    $companies = Company::factory()->count(3)->create(['user_id' => $user->id]);
+    $companyToUpdate = $companies->first();
 
     $updateCompanyData = [
         'user_id' => $user->id,
@@ -112,10 +113,13 @@ test('companies profile can be edited', function () {
 
     // Act: Send PUT request to update the Company
     $response = $this->actingAs($user)
-        ->put(route('company.update', $user->id), $updateCompanyData);
+        ->put(route('company.update', $companyToUpdate->id), $updateCompanyData);
 
     // Assert: Check that the Company data was updated in the database
-    $this->assertDatabaseHas('companies', $updateCompanyData);
+    $this->assertDatabaseHas('companies', array_merge(
+        $updateCompanyData,
+        ['id' => $companyToUpdate->id]
+    ));
 
     // Check that the response is a redirect (successful update)
     $response->assertStatus(302);

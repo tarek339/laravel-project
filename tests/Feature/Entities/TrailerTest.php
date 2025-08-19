@@ -85,7 +85,7 @@ test('trailer profile can be fetched', function () {
                 ->has(
                     'trailer',
                     fn ($trailerData) => $trailerData
-                        ->where('id', $trailer->id)
+                        ->where('id', $trailer->id->toString())
                         ->etc()
                 )
         );
