@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('trailers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
+            $table->foreignUuid('company_id')->constrained('companies')->onDelete('cascade');
             $table->string('license_plate')->unique();
             $table->string('identification_number');
             $table->date('next_major_inspection')->nullable();
