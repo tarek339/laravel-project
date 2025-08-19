@@ -30,18 +30,20 @@ class CheckDriversCommand extends Command
         $licenseExpiresInOneMonth = Driver::whereDate('license_expiry_date', '=', now()->addDays(30)->toDateString())->get();
         $licenseExpiresInTwoMonth = Driver::whereDate('license_expiry_date', '=', now()->addDays(60)->toDateString())->get();
 
-        $this->checkDriversLicense($licenseExpiresInOneMonth, $licenseExpiresInTwoMonth);
+        $drivers_license_expirations = $this->checkDriversLicense($licenseExpiresInOneMonth, $licenseExpiresInTwoMonth);
 
         // Get drivers whose cards expire in the next one or two months
         $driversCardExpiresInOneMonth = Driver::whereDate('driver_card_expiry_date', '=', now()->addDays(30)->toDateString())->get();
         $driversCardExpiresInTwoMonth = Driver::whereDate('driver_card_expiry_date', '=', now()->addDays(60)->toDateString())->get();
 
-        $this->checkDriversCard($driversCardExpiresInOneMonth, $driversCardExpiresInTwoMonth);
+        $drivers_cards_expirations = $this->checkDriversCard($driversCardExpiresInOneMonth, $driversCardExpiresInTwoMonth);
 
         $driversQualificationExpiresInOneMonth = Driver::whereDate('driver_qualification_expiry_date', '=', now()->addDays(30)->toDateString())->get();
         $driversQualificationExpiresInTwoMonth = Driver::whereDate('driver_qualification_expiry_date', '=', now()->addDays(60)->toDateString())->get();
 
-        $this->checkQualification($driversQualificationExpiresInOneMonth, $driversQualificationExpiresInTwoMonth);
+        $drivers_qualification_expirations = $this->checkQualification($driversQualificationExpiresInOneMonth, $driversQualificationExpiresInTwoMonth);
+
+        $expiring_drivers = array_merge($drivers_license_expirations, $drivers_cards_expirations, $drivers_qualification_expirations);
     }
 
     /**

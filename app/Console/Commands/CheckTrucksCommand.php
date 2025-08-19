@@ -30,19 +30,23 @@ class CheckTrucksCommand extends Command
         $nextMajorInspectionInOneMonth = Truck::whereDate('next_major_inspection', '=', now()->addDays(30)->toDateString())->get();
         $nextMajorInspectionInTwoMonths = Truck::whereDate('next_major_inspection', '=', now()->addDays(60)->toDateString())->get();
 
-        $this->checkTrucksMajorInspection($nextMajorInspectionInOneMonth, $nextMajorInspectionInTwoMonths);
+        $expiring_major_inspections = $this->checkTrucksMajorInspection($nextMajorInspectionInOneMonth, $nextMajorInspectionInTwoMonths);
 
         // Check trucks' safety inspection is due in the next or two months
         $nextSafetyInspectionInOneMonth = Truck::whereDate('next_safety_inspection', '=', now()->addDays(30)->toDateString())->get();
         $nextSafetyInspectionInTwoMonths = Truck::whereDate('next_safety_inspection', '=', now()->addDays(60)->toDateString())->get();
 
-        $this->checkTrucksSafetyInspection($nextSafetyInspectionInOneMonth, $nextSafetyInspectionInTwoMonths);
+        $expiring_safety_inspections = $this->checkTrucksSafetyInspection($nextSafetyInspectionInOneMonth, $nextSafetyInspectionInTwoMonths);
 
         // Check trucks' tachograph inspection is due in the next or two months
         $nextTachographInspectionInOneMonth = Truck::whereDate('next_tachograph_inspection', '=', now()->addDays(30)->toDateString())->get();
         $nextTachographInspectionInTwoMonths = Truck::whereDate('next_tachograph_inspection', '=', now()->addDays(60)->toDateString())->get();
 
-        $this->checkTrucksTachoInspection($nextTachographInspectionInOneMonth, $nextTachographInspectionInTwoMonths);
+        $expiring_tachograph_inspections = $this->checkTrucksTachoInspection($nextTachographInspectionInOneMonth, $nextTachographInspectionInTwoMonths);
+
+        $expiring_trucks = array_merge($expiring_major_inspections, $expiring_safety_inspections, $expiring_tachograph_inspections);
+
+        print_r($expiring_trucks);
     }
 
     private function checkTrucksMajorInspection($nextMajorInspectionInOneMonth, $nextMajorInspectionInTwoMonths)
