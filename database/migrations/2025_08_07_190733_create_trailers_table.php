@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('trailers', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->string('license_plate')->unique();
             $table->string('identification_number');
             $table->date('next_major_inspection')->nullable();
             $table->date('next_safety_inspection')->nullable();
             $table->text('additional_information')->nullable();
+            $table->timestamps();
         });
     }
 

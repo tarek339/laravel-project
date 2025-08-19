@@ -15,7 +15,6 @@ return new class extends Migration
             $table->dropColumn('assigned_to');
             $table->string('assigned_to_trailer')->nullable();
             $table->string('assigned_to_driver')->nullable();
-            $table->timestamps();
         });
     }
 
