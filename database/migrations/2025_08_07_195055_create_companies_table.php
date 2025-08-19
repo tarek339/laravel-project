@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('name')->unique();
             $table->string('email')->unique();
@@ -27,6 +26,7 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('authorization_number')->nullable();
             $table->date('authorization_number_expiry_date')->nullable();
+            $table->timestamps();
         });
     }
 

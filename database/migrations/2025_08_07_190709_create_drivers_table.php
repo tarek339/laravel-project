@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('drivers', function (Blueprint $table) {
             $table->string('assigned_to')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->timestamps();
         });
     }
 
