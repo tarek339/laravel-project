@@ -83,7 +83,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <InputError message={errors.password} />
                     </div>
 
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center gap-1">
                         <Checkbox
                             id="remember"
                             name="remember"
