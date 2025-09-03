@@ -45,6 +45,7 @@ export default function Register() {
                             onChange={(e) => setData("email", e.target.value)}
                             disabled={processing}
                             placeholder="email@example.com"
+                            autoFocus
                         />
                         <InputError message={errors.email} />
                     </div>
